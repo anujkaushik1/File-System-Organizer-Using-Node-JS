@@ -1,12 +1,14 @@
 let inputArr = process.argv.slice(2);
 let command = inputArr[0];
+let fs = require("fs");
+let path = require("path");
 
 switch (command) {
   case "tree":
-    treeFun();
+    treeFun(inputArr[1]);
     break;
   case "organize":
-    organizeFun();
+    organizeFun(inputArr[1]);
     break;
   case "help":
     helpFun();
@@ -20,9 +22,29 @@ function treeFun(dirPath) {
 }
 
 function organizeFun(dirPath) {
-  console.log("Organize Command Implemented for ", dirPath);
+  if (!dirPath) {
+    console.log("Kindly enter the path");
+    return;
+  }
+
+  if (!fs.existsSync(dirPath)) {
+    console.log("Kindly enter the correct path");
+    return;
+  }
+
+  let desPath = path.join(dirPath, "organized_files");
+  if (fs.existsSync(desPath)) {
+    console.log("Folder already exists");
+    return;
+  }
+  fs.mkdirSync(desPath);
 }
 
 function helpFun(dirPath) {
-  console.log("Help Command Implemented for ", dirPath);
+  console.log(`
+    List of all the commands:
+              node main.js tree "directoryPath"
+              node main.js organize "directoryPath"
+              node main.js help
+  `);
 }
