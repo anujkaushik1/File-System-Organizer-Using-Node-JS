@@ -1,5 +1,6 @@
 let inputArr = process.argv.slice(2);
 let command = inputArr[0];
+const { dir } = require("console");
 let fs = require("fs");
 let path = require("path");
 let types = {
@@ -38,7 +39,36 @@ switch (command) {
 }
 
 function treeFun(dirPath) {
-  console.log("Tree Command Implemented for ", dirPath);
+  if (!dirPath) {
+    console.log("Kindly enter the path");
+    return;
+  }
+
+  if (!fs.existsSync(dirPath)) {
+    console.log("Kindly enter the correct path");
+    return;
+  }
+
+  treeHelper(dirPath, "");
+
+}
+
+function treeHelper(dirPath, indent){  // Using Recursion
+  let isFile = fs.lstatSync(dirPath).isFile();
+  if(isFile){
+    let fileName = path.basename(dirPath)
+    console.log(indent + "------" + fileName);
+  }
+  else{
+    let dirName = path.basename(dirPath);
+    console.log(indent + "|------" + dirName);
+    let children = fs.readdirSync(dirPath);
+
+    for(let i = 0; i < children.length; i++){
+      let childPath = path.join(dirPath, children[i]);
+      treeHelper(childPath, indent + "\t");  
+    }
+  }
 }
 
 function organizeFun(dirPath) {
