@@ -1,0 +1,23 @@
+{
+  "name": "file-system-organizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anujkaushik1/File-System-Organizer-Using-Node-JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anujkaushik1/File-System-Organizer-Using-Node-JS/issues"
+  },
+  "homepage": "https://github.com/anujkaushik1/File-System-Organizer-Using-Node-JS#readme",
+  "bin": {
+    "anmu" : "main.js"
+  }
+}

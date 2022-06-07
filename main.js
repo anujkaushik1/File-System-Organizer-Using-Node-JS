@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 let inputArr = process.argv.slice(2);
 let command = inputArr[0];
 const { dir } = require("console");
@@ -40,8 +42,7 @@ switch (command) {
 
 function treeFun(dirPath) {
   if (!dirPath) {
-    console.log("Kindly enter the path");
-    return;
+    dirPath = process.cwd();
   }
 
   if (!fs.existsSync(dirPath)) {
@@ -50,39 +51,39 @@ function treeFun(dirPath) {
   }
 
   treeHelper(dirPath, "");
-
 }
 
-function treeHelper(dirPath, indent){  // Using Recursion
+function treeHelper(dirPath, indent) {
+  // Using Recursion
   let isFile = fs.lstatSync(dirPath).isFile();
-  if(isFile){
-    let fileName = path.basename(dirPath)
+  if (isFile) {
+    let fileName = path.basename(dirPath);
     console.log(indent + "------" + fileName);
-  }
-  else{
+  } else {
     let dirName = path.basename(dirPath);
     console.log(indent + "|------" + dirName);
     let children = fs.readdirSync(dirPath);
 
-    for(let i = 0; i < children.length; i++){
+    for (let i = 0; i < children.length; i++) {
       let childPath = path.join(dirPath, children[i]);
-      treeHelper(childPath, indent + "\t");  
+      treeHelper(childPath, indent + "\t");
     }
   }
 }
 
 function organizeFun(dirPath) {
+  let desPath;
+
   if (!dirPath) {
-    console.log("Kindly enter the path");
-    return;
-  }
+    dirPath = process.cwd();
+ }
 
   if (!fs.existsSync(dirPath)) {
     console.log("Kindly enter the correct path");
     return;
   }
 
-  let desPath = path.join(dirPath, "organized_files");
+  desPath = path.join(dirPath, "organized_files");
   if (!fs.existsSync(desPath)) {
     fs.mkdirSync(desPath);
   }
@@ -101,10 +102,9 @@ function organizeHelper(src, dest) {
   }
 }
 
-
-function sendFiles(srcFilePath, dest, category){
+function sendFiles(srcFilePath, dest, category) {
   let categoryPath = path.join(dest, category);
-  if(!fs.existsSync(categoryPath)){
+  if (!fs.existsSync(categoryPath)) {
     fs.mkdirSync(categoryPath);
   }
 
@@ -113,14 +113,14 @@ function sendFiles(srcFilePath, dest, category){
   fs.copyFileSync(srcFilePath, destFilePath);
 
   console.log(fileName, " copied to ", category);
-
 }
 
 function getCategory(name) {
   let ext = path.extname(name);
   ext = ext.slice(1);
 
-  for (let type in types) {   // will get all keys from object(media,archives,documents)
+  for (let type in types) {
+    // will get all keys from object(media,archives,documents)
     let currTypeArr = types[type];
     for (let i = 0; i < currTypeArr.length; i++) {
       if (ext == currTypeArr[i]) {
