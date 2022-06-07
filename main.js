@@ -66,9 +66,24 @@ function organizeHelper(src, dest) {
     let isFile = fs.lstatSync(childAddress).isFile();
     if (isFile) {
       let category = getCategory(childNames[i]);
-      console.log(childNames[i], 'belongs to', category);
+      sendFiles(childAddress, dest, category);
     }
   }
+}
+
+
+function sendFiles(srcFilePath, dest, category){
+  let categoryPath = path.join(dest, category);
+  if(!fs.existsSync(categoryPath)){
+    fs.mkdirSync(categoryPath);
+  }
+
+  let fileName = path.basename(srcFilePath);
+  let destFilePath = path.join(categoryPath, fileName);
+  fs.copyFileSync(srcFilePath, destFilePath);
+
+  console.log(fileName, " copied to ", category);
+
 }
 
 function getCategory(name) {
