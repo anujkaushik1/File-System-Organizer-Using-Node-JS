@@ -2,6 +2,12 @@ let inputArr = process.argv.slice(2);
 let command = inputArr[0];
 let fs = require("fs");
 let path = require("path");
+let types = {
+  media : ['mp4, mkv'],
+  archives : ['zip', '7z', 'rar', 'tar', 'gz', 'ar', 'iso', 'xz'],
+  documents : ['docx', 'doc', 'pdf', 'xlsx', 'xls', 'odt', 'ods', 'odp', 'odg', 'odf', 'txt', 'ps', 'tex'],
+  app : ['exe', 'dmg', 'pkg', 'deb']
+}
 
 switch (command) {
   case "tree":
@@ -33,11 +39,21 @@ function organizeFun(dirPath) {
   }
 
   let desPath = path.join(dirPath, "organized_files");
-  if (fs.existsSync(desPath)) {
-    console.log("Folder already exists");
-    return;
+  if (!fs.existsSync(desPath)) {
+    fs.mkdirSync(desPath);
   }
-  fs.mkdirSync(desPath);
+  organizeHelper(dirPath, desPath); // source, destination
+}
+
+function organizeHelper(src, dest) {
+  let childNames = fs.readdirSync(src);
+  for (let i = 0; i < childNames.length; i++) {
+    let childAddress = path.join(src, childNames[i]);
+    let isFile = fs.lstatSync(childAddress).isFile();
+    if (isFile) {
+      console.log(childNames[i]);
+    }
+  }
 }
 
 function helpFun(dirPath) {
